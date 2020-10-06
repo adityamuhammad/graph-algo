@@ -17,7 +17,7 @@
 def dijkstra(a, b, nodes, n):
     dist = [float('inf')] * n
     visited = [False] * n
-    pred = [-1] * n
+    p = [-1] * n
     dist[a] = 0
 
     while True:
@@ -36,9 +36,9 @@ def dijkstra(a, b, nodes, n):
             w = weight(v[0], nodes[u])
             if dist[v[0]] > dist[u] + w:
                 dist[v[0]] = dist[u] + w
-                pred[v[0]] = u
+                p[v[0]] = u
 
-    return dist
+    return (dist, p)
              
  
 def weight(b, from_nodes):
@@ -46,6 +46,12 @@ def weight(b, from_nodes):
         if i[0] == b: 
             return i[1]
 
+def trav_path(a, b, p):
+    if p[b] == -1 and b != a:
+        print("there is no way")
+    elif p[b] != -1:
+        trav_path(a, p[b], p)
+        print([p[b],b])
 
 
 nodes = [
@@ -55,5 +61,8 @@ nodes = [
     [(2,2)],
     []
 ]
-print(dijkstra(0,4, nodes, len(nodes)))
+dijkstra_func =dijkstra(0,4, nodes, len(nodes))
+distances, paths = dijkstra_func[0], dijkstra_func[1]
+print(distances)
 
+print(trav_path(0,4, paths))
